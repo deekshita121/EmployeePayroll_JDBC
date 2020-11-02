@@ -1,13 +1,12 @@
 package com.capgemini.employeepayroll;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 
 public class EmployeePayrollService {
 
@@ -29,7 +28,7 @@ public class EmployeePayrollService {
 				int id = result.getInt("id");
 				String name = result.getString("name");
 				double salary = result.getDouble("salary");
-				LocalDate start = result.getDate("startDate").toLocalDate();
+				LocalDate start = result.getDate("start").toLocalDate();
 				employeePayrollList.add(new EmployeePayroll(id, name, salary, start));
 				
 			}
