@@ -1,9 +1,13 @@
 package com.capgemini.employeepayroll;
 
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+
+import com.capgemini.employeepayroll.DataBaseException.exceptionType;
+
 
 public class DataBase 
 {
@@ -14,7 +18,7 @@ public class DataBase
 	 static java.sql.Connection con = null;
 	 
 	 
-	 public static java.sql.Connection getConnection()
+	 public static java.sql.Connection getConnection () throws DataBaseException
 		{
 			try {
 				//Driver Loading
@@ -24,7 +28,7 @@ public class DataBase
 				System.out.println("Connection Successful");
 				
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new DataBaseException("Unable to load the driver!!", exceptionType.DRIVER_CONNECTION);
 				
 			}
 			
