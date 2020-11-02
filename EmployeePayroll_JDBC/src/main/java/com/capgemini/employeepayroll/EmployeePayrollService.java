@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.capgemini.employeepayroll.DataBaseException.exceptionType;
 
@@ -148,5 +150,20 @@ public class EmployeePayrollService {
 			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
 		return employeePayrollList;
+	}
+	
+	public Map<String, Double> getDataGroupedByGender(String operation, String column) throws DataBaseException {
+		Map<String, Double> empDataGroupedByGender = new HashMap<>();
+		String sqlQuery = String.format("SELECT gender, %s(%s) AS salary_sum FROM employee_payroll GROUP BY gender;",operation,column);
+		try (Connection connection = DataBase.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sqlQuery);
+			while (result.next()) {
+				empDataGroupedByGender.put(result.getString("gender"), result.getDouble("salary_sum"));
+			}
+		} catch (SQLException e) {
+			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return empDataGroupedByGender;
 	}
 }
