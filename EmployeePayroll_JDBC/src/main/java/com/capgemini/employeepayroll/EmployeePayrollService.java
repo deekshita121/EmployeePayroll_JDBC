@@ -1,6 +1,7 @@
 package com.capgemini.employeepayroll;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,10 @@ public class EmployeePayrollService {
 		// Welcome Message
 		System.out.println("Welcome to Employee Payroll Service");
 
+	}
+	
+	public enum statementType {
+		STATEMENT, PREPARED_STATEMENT
 	}
 
 	List<EmployeePayroll> employeePayrollList = null;
@@ -45,6 +50,19 @@ public class EmployeePayrollService {
 		try (Connection connection = DataBase.getConnection()) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sqlQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int updateUsingPreparedStatement(String name, double salary, statementType preparedStatement) {
+		String sql = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+		try (Connection connection = DataBase.getConnection()) {
+			PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
+			preparedStatementUpdate.setDouble(1, salary);
+			preparedStatementUpdate.setString(2, name);
+			return preparedStatementUpdate.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

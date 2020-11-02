@@ -34,4 +34,12 @@ public class EmployeePayrollTest
 		boolean result = employeePayrollService.check(employeeList, "Diya", 3000000.00);
 		Assert.assertTrue(result);
 	}
+	
+	@Test
+	public void givenUpdatedSalaryWhenUpdatedUsingPreparedStatementShouldSyncWithDatabase() {
+		employeeList = employeePayrollService.readData();
+		employeePayrollService.updateUsingPreparedStatement("Diya", 2000000.00, EmployeePayrollService.statementType.PREPARED_STATEMENT);
+		boolean result = employeePayrollService.check(employeeList, "Diya", 2000000.00);
+		assertTrue(result);
+	}
 }
