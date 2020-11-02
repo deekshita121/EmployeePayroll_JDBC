@@ -2,6 +2,7 @@ package com.capgemini.employeepayroll;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -13,7 +14,7 @@ public class EmployeePayrollTest
 {
     
 	private EmployeePayrollService employeePayrollService;
-	private List<EmployeePayroll> employeeList;
+	private List<EmployeePayroll> employeeList = new ArrayList<>();
 
 	@Before
 	public void init() {

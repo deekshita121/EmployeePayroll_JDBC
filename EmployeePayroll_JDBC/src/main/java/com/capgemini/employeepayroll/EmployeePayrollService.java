@@ -22,7 +22,7 @@ public class EmployeePayrollService {
 		String sqlQuery = "SELECT * FROM employee_payroll";
 		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
 		DataBase obj = new DataBase();
-		try (Connection con = (Connection) obj.getConnection()) {
+		try(Connection con =  (Connection) obj.getConnection()) {
 			Statement statement = (Statement) con.createStatement();
 			ResultSet result = statement.executeQuery(sqlQuery);
 			while (result.next()) {
@@ -31,7 +31,7 @@ public class EmployeePayrollService {
 				double salary = result.getDouble("salary");
 				LocalDate start = result.getDate("startDate").toLocalDate();
 				employeePayrollList.add(new EmployeePayroll(id, name, salary, start));
-				System.out.println("po");
+				
 			}
 		} catch (SQLException e) {
 			

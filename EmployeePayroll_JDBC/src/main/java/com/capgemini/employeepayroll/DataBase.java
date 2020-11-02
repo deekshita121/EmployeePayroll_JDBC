@@ -27,8 +27,9 @@ public class DataBase
 				
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("po");
+				
 			}
+			
 			return con;
 		}
 	
