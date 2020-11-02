@@ -1,6 +1,7 @@
 package com.capgemini.employeepayroll;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.capgemini.employeepayroll.DataBaseException.exceptionType;
-
 
 public class EmployeePayrollService {
 
@@ -32,8 +32,6 @@ public class EmployeePayrollService {
 		STATEMENT, PREPARED_STATEMENT
 	}
 
-
-
 	// To read payroll Data from database
 	public List<EmployeePayroll> readData() throws DataBaseException {
 		String sqlQuery = "SELECT * FROM employee_payroll";
@@ -43,8 +41,7 @@ public class EmployeePayrollService {
 			ResultSet result = statement.executeQuery(sqlQuery);
 			employeePayrollList = getResultSet(result);
 		} catch (SQLException e) {
-			//throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
-			e.printStackTrace();
+			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
 		return employeePayrollList;
 	}
@@ -90,16 +87,15 @@ public class EmployeePayrollService {
 		return 0;
 	}
 
-	private int updateUsingStatement(String name, double salary) {
+	private int updateUsingStatement(String name, double salary) throws DataBaseException {
 		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
-		int ap=0;
+		int ap = 0;
 		try (Connection connection = DataBase.getConnection()) {
 			Statement statement = connection.createStatement();
-			
-			ap= statement.executeUpdate(sqlQuery);
+
+			ap = statement.executeUpdate(sqlQuery);
 		} catch (SQLException | DataBaseException e) {
-			//throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
-			e.printStackTrace();
+			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
 		return ap;
 	}
@@ -138,5 +134,19 @@ public class EmployeePayrollService {
 		} catch (SQLException e) {
 			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
+	}
+
+	public List<EmployeePayroll> getEmployeeDataByDate(LocalDate start, LocalDate endDate) throws DataBaseException {
+		String sqlQuery = String.format("SELECT * FROM employee_payroll WHERE start BETWEEN '%s' AND '%s';",
+				Date.valueOf(start), Date.valueOf(endDate));
+		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
+		try (Connection connection = DataBase.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sqlQuery);
+			employeePayrollList = getResultSet(result);
+		} catch (SQLException e) {
+			throw new DataBaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return employeePayrollList;
 	}
 }

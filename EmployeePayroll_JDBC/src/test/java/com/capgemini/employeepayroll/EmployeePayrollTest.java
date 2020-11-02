@@ -2,6 +2,7 @@ package com.capgemini.employeepayroll;
 
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +12,10 @@ import org.junit.Test;
 
 import com.capgemini.employeepayroll.EmployeePayrollService.statementType;
 
+public class EmployeePayrollTest {
 
-public class EmployeePayrollTest 
-{
-    
 	private EmployeePayrollService employeePayrollService;
-	private List<EmployeePayroll> employeeList =new ArrayList<>();
+	private List<EmployeePayroll> employeeList = new ArrayList<>();
 
 	@Before
 	public void init() {
@@ -25,14 +24,9 @@ public class EmployeePayrollTest
 
 	// To test the retrieved entries from database
 	@Test
-	public void givenEmployeePayrollInDBWhenRetrievedShouldMatchEmployeeCount()  {
-		try {
-			employeeList = employeePayrollService.readData();
-		} catch (DataBaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(employeeList.size());
+	public void givenEmployeePayrollInDBWhenRetrievedShouldMatchEmployeeCount() throws DataBaseException {
+
+		employeeList = employeePayrollService.readData();
 		Assert.assertEquals(3, employeeList.size());
 	}
 
@@ -54,4 +48,11 @@ public class EmployeePayrollTest
 		boolean result = employeePayrollService.check(employeeList, "Diya", 2000000.00);
 		assertTrue(result);
 	}
+	
+	// To test the data retrieved when start date of employee given
+		@Test
+		public void givenDateRangeWhenRetrievedEmployeeDataShouldMatchEmployeeCount() throws DataBaseException {
+			employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2018, 01, 01), LocalDate.now());
+			Assert.assertEquals(3, employeeList.size());
+		}
 }
