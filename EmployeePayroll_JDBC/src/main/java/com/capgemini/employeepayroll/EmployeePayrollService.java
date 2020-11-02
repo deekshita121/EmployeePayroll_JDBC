@@ -56,6 +56,17 @@ public class EmployeePayrollService {
 		return 0;
 	}
 	
+	private int updateUsingStatement(String name, double salary) {
+		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
+		try (Connection connection = DataBase.getConnection()) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sqlQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public int updateUsingPreparedStatement(String name, double salary, statementType preparedStatement) {
 		String sql = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
 		try (Connection connection = DataBase.getConnection()) {

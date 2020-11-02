@@ -10,7 +10,7 @@ public class DataBase
 	
 	 static String url = "jdbc:mysql://localhost:3306/payroll_service?useSSL=false";
 	 static String userName = "root";
-	 static String password = "";
+	 static String password = "Dhruv@876A";
 	 static java.sql.Connection con = null;
 	 
 	 
