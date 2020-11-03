@@ -28,7 +28,7 @@ public class EmployeePayrollTest {
 	public void givenEmployeePayrollInDBWhenRetrievedShouldMatchEmployeeCount() throws DataBaseException {
 
 		employeeList = employeePayrollService.readData();
-		Assert.assertEquals(3, employeeList.size());
+		Assert.assertEquals(4, employeeList.size());
 	}
 
 	// To test whether database is updated for a given entry or not using statement
@@ -54,14 +54,14 @@ public class EmployeePayrollTest {
 	@Test
 	public void givenDateRangeWhenRetrievedEmployeeDataShouldMatchEmployeeCount() throws DataBaseException {
 		employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2018, 01, 01), LocalDate.now());
-		Assert.assertEquals(3, employeeList.size());
+		Assert.assertEquals(4, employeeList.size());
 	}
 
 	@Test
 	public void givenEmployeeDB_WhenRetrievedData_ShouldReturnSumGroupedByGender() throws DataBaseException {
 		Map<String, Double> empDataGroupByGender = null;
 		empDataGroupByGender = employeePayrollService.getDataGroupedByGender("sum", "salary");
-		Double maleSalary = 200000.00;
+		Double maleSalary = 4200000.00;
 		Assert.assertEquals(maleSalary, empDataGroupByGender.get("M"));
 		Double femaleSalary = 3150000.00;
 		Assert.assertEquals(femaleSalary, empDataGroupByGender.get("F"));
@@ -71,7 +71,7 @@ public class EmployeePayrollTest {
 	public void givenEmployeeDB_WhenRetrievedData_ShouldReturnAvgGroupedByGender() throws DataBaseException {
 		Map<String, Double> empDataGroupByGender = null;
 		empDataGroupByGender = employeePayrollService.getDataGroupedByGender("avg", "salary");
-		Double maleSalary = 200000.00;
+		Double maleSalary = 2100000.00;
 		Assert.assertEquals(maleSalary, empDataGroupByGender.get("M"));
 		Double femaleSalary = 1075000.00;
 		Assert.assertEquals(femaleSalary, empDataGroupByGender.get("F"));
@@ -91,10 +91,18 @@ public class EmployeePayrollTest {
 	public void givenEmployeeDB_WhenRetrievedData_ShouldReturnMaxSalaryGroupedByGender() throws DataBaseException {
 		Map<String, Double> empDataGroupByGender = null;
 		empDataGroupByGender = employeePayrollService.getDataGroupedByGender("max", "salary");
-		Double maleSalary = 200000.00;
+		Double maleSalary = 4000000.00;
 		Assert.assertEquals(maleSalary, empDataGroupByGender.get("M"));
 		Double femaleSalary = 2000000.00;
 		Assert.assertEquals(femaleSalary, empDataGroupByGender.get("F"));
 	}
 
+	// To test when a new employee is added to database
+	@Test
+	public void givenNewEmployeeWhenAddedShouldSyncWithDatabase() throws DataBaseException {
+		EmployeePayroll newEmployee = new EmployeePayroll(4, "Charlie", 'M', 4000000.00, LocalDate.now());
+		EmployeePayroll employeeData = null;
+        employeeData = employeePayrollService.addEmployeeData("Charlie", 'M', 4000000.00, LocalDate.now());
+		Assert.assertEquals(4,employeeData.getId());
+	}
 }

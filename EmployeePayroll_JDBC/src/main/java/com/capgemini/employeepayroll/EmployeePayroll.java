@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class EmployeePayroll {
 	private int id;
 	private String name;
+	private char gender;
 	private Double salary;
 	private LocalDate start;
 
@@ -16,6 +17,10 @@ public class EmployeePayroll {
 		this.start = start;
 	}
 
+	public EmployeePayroll(int id, String name, char gender, Double salary, LocalDate startDate) {
+		this(id, name, salary, startDate);
+		this.gender = gender;
+	}
 	// Getters and Setters
 	public int getId() {
 		return id;
@@ -33,6 +38,14 @@ public class EmployeePayroll {
 		this.name = name;
 	}
 
+	public char getGender() {
+		return gender;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+	
 	public Double getSalary() {
 		return salary;
 	}
